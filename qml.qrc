@@ -1,0 +1,23 @@
+<RCC>
+    <qresource prefix="/main">
+        <file>MainWindow.qml</file>
+        <file>Chat.qml</file>
+        <file>SideChatEntry.qml</file>
+        <file>SidePanel.qml</file>
+    </qresource>
+    <qresource prefix="/auth">
+        <file>AuthWindow.qml</file>
+        <file>CodeInput.qml</file>
+        <file>NumberInput.qml</file>
+    </qresource>
+    <qresource prefix="/config">
+        <file>Constants.qml</file>
+        <file>Theme.qml</file>
+    </qresource>
+    <qresource prefix="/misc">
+        <file>DirectoryFontLoader.qml</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>qmldir</file>
+    </qresource>
+</RCC>
