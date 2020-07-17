@@ -1,0 +1,26 @@
+<RCC>
+    <qresource prefix="/chat">
+        <file alias="MainWindow.qml">chat/MainWindow.qml</file>
+        <file alias="Chat.qml">chat/Chat.qml</file>
+        <file alias="SideChatEntry.qml">chat/SideChatEntry.qml</file>
+        <file alias="SidePanel.qml">chat/SidePanel.qml</file>
+    </qresource>
+    <qresource prefix="/intro">
+        <file alias="IntroWindow.qml">intro/IntroWindow.qml</file>
+        <file alias="CodeInput.qml">intro/CodeInput.qml</file>
+        <file alias="NumberInput.qml">intro/NumberInput.qml</file>
+        <file alias="ServerDetailsInput.qml">intro/ServerDetailsInput.qml</file>
+        <file alias="IntroStage.qml">intro/IntroStage.qml</file>
+    </qresource>
+    <qresource prefix="/config">
+        <file alias="Constants.qml">config/Constants.qml</file>
+        <file alias="Theme.qml">config/Theme.qml</file>
+    </qresource>
+    <qresource prefix="/misc">
+        <file alias="DirectoryFontLoader.qml">misc/DirectoryFontLoader.qml</file>
+        <file alias="NumberTextField.qml">misc/NumberTextField.qml</file>
+    </qresource>
+    <qresource prefix="/">
+        <file>qmldir</file>
+    </qresource>
+</RCC>

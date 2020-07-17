@@ -1,5 +1,4 @@
-#ifndef PHONENUMBERSERVICE_H
-#define PHONENUMBERSERVICE_H
+#pragma once
 
 #include <phonenumbers/asyoutypeformatter.h>
 #include <memory>
@@ -26,4 +25,3 @@ private:
     std::string _locale;
 };
 
-#endif // PHONENUMBERSERVICE_H

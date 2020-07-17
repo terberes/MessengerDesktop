@@ -1,12 +1,12 @@
-import QtQuick 2.4
+import QtQuick 2.0
 import QtQuick.Controls 2.12
+import "../misc"
 
-Item {
-    signal stageComplete
-    signal setSpin
+IntroStage {
+    id: root
     Label {
         id: title
-        text: qsTr("Enter code")
+        text: qsTr("Enter your phone number")
         anchors.horizontalCenterOffset: 0
         anchors.verticalCenterOffset: -24
         anchors.verticalCenter: parent.verticalCenter
@@ -15,31 +15,27 @@ Item {
         fontSizeMode: Text.Fit
     }
 
-    function submitCode() {
-        console.warn("submitted")
+    function submitNumber() {
+        root.stageComplete()
     }
 
-    TextField {
-        id: codeInput
+    NumberTextField {
+        id: numberInput
         width: 170
-        horizontalAlignment: Text.AlignHCenter
         anchors.top: title.bottom
         anchors.topMargin: 20
         anchors.horizontalCenter: parent.horizontalCenter
         font.pointSize: 11
-        validator: RegExpValidator {
-            regExp: /\d{6}/
-        }
-        onAccepted: submitCode()
+        onSubmit: submitNumber()
     }
 
     Button {
         id: submitButton
         text: qsTr("Submit")
-        anchors.top: codeInput.bottom
-        anchors.horizontalCenter: codeInput.horizontalCenter
+        anchors.top: numberInput.bottom
+        anchors.horizontalCenter: numberInput.horizontalCenter
         anchors.topMargin: 30
-        onClicked: codeInput.acceptableInput ? submitCode() : {}
+        onClicked: numberInput.check() ? submitNumber() : {}
     }
 }
 

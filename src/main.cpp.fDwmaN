@@ -5,8 +5,8 @@
 #include "misc/phonenumberformatterservice.h"
 #include <boost/locale.hpp>
 #include "api/api.h"
-
-typedef QNetworkReply::NetworkError ResponseStatus;
+#include "api/apiresult.h"
+#include "api/requests/getserverprefsrequest.h"
 
 int main(int argc, char *argv[])
 {
@@ -19,13 +19,14 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<PhoneNumberFormatterService>("Misc.Numbers", 1, 0, "PhoneNumberService");
     qmlRegisterType<Promise>("Api", 1, 0, "Promise");
-    qmlRegisterSingletonType<Api>("Api", 1, 0, "Api", [](QQmlEngine* e, QJSEngine*) {
-        return new Api(e);
+    qmlRegisterSingletonType<Api>("Api", 1, 0, "Api", [](QQmlEngine*, QJSEngine*) {
+        return new Api();
     });
     qmlRegisterSingletonInstance("Data", 1, 0, "Settings", s.get());
+    qmlRegisterUncreatableType<QNetworkReply>("Network", 1, 0, "NetworkReply", "Only used for NetworkReplyError enum");
+
     // Enums
-    qRegisterMetaType<ResponseStatus>("ResponseStatus");
-    qmlRegisterUncreatableType<QNetworkReply>("Network", 1, 0, "ResponseStatus", "Only needed for enum");
+    qmlRegisterType<ApiResult>("Api", 1, 0, "ApiResult");
 
     //QQuickStyle::setStyle("Material");
 

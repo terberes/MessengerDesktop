@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
+import Api 1.0
 
 Window {
     id: window
@@ -9,26 +10,6 @@ Window {
     height: 480
     title: qsTr("Login")
 
-    //    Item {
-    //        id: loginStages
-
-    //        states: [
-    //            //            State {
-    //            //                name: "numberInputState"
-    //            //                PropertyChanges {
-    //            //                    target: formLoader
-    //            //                    source: "NumberInput.qml"
-    //            //                }
-    //            //            },
-    //            State {
-    //                name: "codeInputStage"
-    //                PropertyChanges {
-    //                    target: formLoader
-    //                    source: "CodeInput.qml"
-    //                }
-    //            }
-    //        ]
-    //    }
     BusyIndicator {
         id: busyIndicator
         x: 0
@@ -51,6 +32,10 @@ Window {
     }
     property var currentStage: 0
     property list<Component> stages: [
+        Component {
+            id: serverDetailsInput
+            ServerDetailsInput {}
+        },
         Component {
             id: numberInput
             NumberInput {}

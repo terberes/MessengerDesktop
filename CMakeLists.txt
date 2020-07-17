@@ -24,7 +24,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #    endif()
 #endif()
 
-find_package(Qt5 COMPONENTS Core Quick LinguistTools QuickControls2 REQUIRED)
+find_package(Qt5 COMPONENTS Core Quick LinguistTools QuickControls2 Network REQUIRED)
 find_package(Boost 1.72.0 COMPONENTS system locale thread date_time serialization REQUIRED)
 find_package(cpprestsdk REQUIRED)
 
@@ -37,13 +37,15 @@ include_directories(Boost::headers)
 
 set (FILES
     src/main.cpp
-    src/settings.cpp
-    src/settings.h
-    src/phonenumberformatterservice.cpp
-    src/phonenumberformatterservice.h
-    src/api.cpp
-    src/api.h
-    qml.qrc
+    src/data/settings.cpp
+    src/data/settings.h
+    src/misc/phonenumberformatterservice.cpp
+    src/misc/phonenumberformatterservice.h
+    src/api/api.cpp
+    src/api/api.h
+    src/qml/qml.qrc
+    src/misc/promise.cpp
+    src/misc/promise.h
     )
 if(ANDROID)
     add_library(MessengerDesktop SHARED
@@ -61,5 +63,5 @@ target_compile_definitions(MessengerDesktop
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
 target_link_libraries(MessengerDesktop
-    PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 Boost::locale cpprestsdk::cpprest ${LIBPHONENUMBER})
+    PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 Qt5::Network Boost::locale cpprestsdk::cpprest ${LIBPHONENUMBER})
 #qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
