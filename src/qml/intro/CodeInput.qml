@@ -1,5 +1,6 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.12
+import Api 1.0
 
 IntroStage {
     Label {
@@ -13,8 +14,15 @@ IntroStage {
         fontSizeMode: Text.Fit
     }
 
-    function submitCode() {
-        console.warn("submitted")
+    function submitCode(code) {
+        Api.verifyCode(code, root.number).then((result) => {
+            console.error(result)
+        }).fail((err, description) => {
+                    console.log("Error in sending number; code \"",
+                                err, "\"; description \"", description, "\"")
+            openErrorDialog("Error in sending number; code \""
+                            + err + "\"; description \"" + description + "\"")
+        })
     }
 
     TextField {
@@ -28,7 +36,7 @@ IntroStage {
         validator: RegExpValidator {
             regExp: /\d{6}/
         }
-        onAccepted: submitCode()
+        onAccepted: submitCode(text)
     }
 
     Button {
@@ -37,7 +45,7 @@ IntroStage {
         anchors.top: codeInput.bottom
         anchors.horizontalCenter: codeInput.horizontalCenter
         anchors.topMargin: 30
-        onClicked: codeInput.acceptableInput ? submitCode() : {}
+        onClicked: codeInput.acceptableInput ? submitCode(codeInput.text) : {}
     }
 }
 

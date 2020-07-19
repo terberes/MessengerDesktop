@@ -1,9 +1,6 @@
 <RCC>
     <qresource prefix="/chat">
-        <file alias="MainWindow.qml">chat/MainWindow.qml</file>
-        <file alias="Chat.qml">chat/Chat.qml</file>
-        <file alias="SideChatEntry.qml">chat/SideChatEntry.qml</file>
-        <file alias="SidePanel.qml">chat/SidePanel.qml</file>
+        <file alias="ChatWindow.qml">chat/ChatWindow.qml</file>
     </qresource>
     <qresource prefix="/intro">
         <file alias="IntroWindow.qml">intro/IntroWindow.qml</file>

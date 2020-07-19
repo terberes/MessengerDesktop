@@ -3,13 +3,12 @@ import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import Api 1.0
 
-Window {
-    id: window
-    visible: true
-    width: 640
+ApplicationWindow {
+    id: root
+    width: 600
     height: 480
-    title: qsTr("Login")
-
+    visible: true
+//    signal introFinished
     BusyIndicator {
         id: busyIndicator
         x: 0
@@ -45,6 +44,13 @@ Window {
             CodeInput {}
         }
     ]
+    Dialog {
+        id: apiErrorDialog
+        modal: true
+        title: qsTr("Connection Error")
+        contentItem: Label {}
+    }
+    property var number: ""
     Connections {
         target: stagesStack.currentItem
         function onSetSpin(t) {
@@ -52,6 +58,14 @@ Window {
         }
         function onStageComplete() {
             stagesStack.push(stages[++currentStage])
+        }
+        function onOpenErrorDialog(content, header, footer) {
+            apiErrorDialog.title = !!header || "Api error"
+            apiErrorDialog.contentItem.label = content
+            apiErrorDialog.footer = !!header || ""
+        }
+        function onSetNumber(numberIn) {
+            number = numberIn
         }
     }
 }

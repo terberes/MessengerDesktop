@@ -9,13 +9,13 @@ TextField {
     property bool isError: false
     property bool isChecked: false
     //        color: isError ? "#c00000" : (isChecked ? "#00c000" : "#000000")
-    signal submit
+    signal submit(var number)
     color: isError ? "#c00000" : "#000000"
     function check() {
         isError = !numberService.verify()
         isChecked = !isError
         if (isChecked)
-            submit()
+            submit(numberService.number)
         return isChecked
     }
     Keys.onPressed: {

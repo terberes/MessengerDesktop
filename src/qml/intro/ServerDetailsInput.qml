@@ -1,7 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.12
 import Api 1.0
-import Data 1.0
+import Persist 1.0
 import Network 1.0
 
 IntroStage {
@@ -16,12 +16,16 @@ IntroStage {
         fontSizeMode: Text.Fit
     }
     function submitServerPrefs() {
-        console.warn("addr: " + addressInput.text
-                     != "" ? addressInput.text : addressInput.placeholderText)
         setSpin(true)
-        Api.get_server_preferences().then(() => {
+        Api.setBaseUrl(addressInput.getAddr())
+        Api.getServerPrefs().then((result) => {
             setSpin(false)
+            Settings.setRealTimeURLs(result["realTimeServerIPv4"], result["realTimeServerIPv6"], result["realTimePortIPv4"], result["realTimePortIPv6"])
             stageComplete()
+        }).fail((error, description) => {
+            setSpin(false)
+            console.debug("Error; code", error, "description", description)
+            openErrorDialog(`Error code ${error}, ${description}`)
         })
     }
 
@@ -35,6 +39,9 @@ IntroStage {
         anchors.horizontalCenter: parent.horizontalCenter
         font.pointSize: 11
         onAccepted: submitServerPrefs()
+        function getAddr() {
+            return text != "" ? text : placeholderText
+        }
     }
 
     Button {
@@ -47,9 +54,5 @@ IntroStage {
     }
 }
 
-/*##^##
-Designer {
-    D{i:0;autoSize:true;height:480;width:640}
-}
-##^##*/
+
 

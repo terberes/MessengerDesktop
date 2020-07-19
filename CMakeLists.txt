@@ -25,8 +25,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 find_package(Qt5 COMPONENTS Core Quick LinguistTools QuickControls2 Network REQUIRED)
-find_package(Boost 1.72.0 COMPONENTS system locale thread date_time serialization REQUIRED)
-find_package(cpprestsdk REQUIRED)
+find_package(Boost 1.72.0 COMPONENTS locale REQUIRED)
 
 find_library(LIBPHONENUMBER phonenumber REQUIRED)
 
@@ -46,7 +45,7 @@ set (FILES
     src/qml/qml.qrc
     src/misc/promise.cpp
     src/misc/promise.h
-    )
+        )
 if(ANDROID)
     add_library(MessengerDesktop SHARED
       ${FILES}
@@ -63,5 +62,5 @@ target_compile_definitions(MessengerDesktop
   PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
 target_link_libraries(MessengerDesktop
-    PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 Qt5::Network Boost::locale cpprestsdk::cpprest ${LIBPHONENUMBER})
+    PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 Qt5::Network Boost::locale ${LIBPHONENUMBER})
 #qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})
