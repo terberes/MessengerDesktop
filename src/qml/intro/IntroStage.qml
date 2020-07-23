@@ -6,4 +6,5 @@ Item {
     signal setSpin(bool t)
     signal setNumber(var number)
     signal openErrorDialog(var content, var header, var footer)
+    signal enableRegister
 }

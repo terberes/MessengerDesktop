@@ -3,9 +3,9 @@
 #include "data/settings.h"
 #include <QQuickStyle>
 #include "misc/phonenumberformatterservice.h"
-#include <boost/locale.hpp>
 #include <QQmlContext>
 #include "api/api.h"
+#include "misc/restarter.h"
 
 int main(int argc, char *argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -17,6 +17,9 @@ int main(int argc, char *argv[]) {
 
     qmlRegisterType<PhoneNumberFormatterService>("Misc.Numbers", 1, 0,
             "PhoneNumberService");
+    qmlRegisterSingletonType<Restarter>("Misc.System", 1, 0, "Restarter", [](QQmlEngine *, QJSEngine *e) {
+        return new Restarter(e);
+    });
     qmlRegisterType<Promise>("Api", 1, 0, "Promise");
     qmlRegisterSingletonType<Api>("Api", 1, 0, "Api",
             [](QQmlEngine *, QJSEngine *e) { return new Api(e); });

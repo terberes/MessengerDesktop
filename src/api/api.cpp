@@ -48,7 +48,7 @@ Api::Api(QJSEngine *qjsEnginePtr) :
     return p;
 }
 
-[[maybe_unused]] Promise* Api::sendCode(const QString& number, CodeVerificationChannel chan) {
+[[maybe_unused]] Promise* Api::sendCode(QString number, CodeVerificationChannel chan) {
     auto p = new Promise { [](QNetworkReply *reply) -> QVariant {
         if (auto err = reply->error())
             return err;
@@ -66,40 +66,26 @@ Api::Api(QJSEngine *qjsEnginePtr) :
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
     req.setOriginatingObject(p);
     QJsonObject json{};
-    QString num = number;
-    normalizeNumber(&num);
-    json["number"] = num;
+    json["number"] = normalizeNumber(number);
     json["channel"] = getApiChannelValue(chan);
     _manager->post(req, QJsonDocument(json).toJson(QJsonDocument::Compact));
     handles.append(p);
     return p;
 }
 
-[[maybe_unused]] Promise* Api::verifyCode(const QString &code, const QString &number) {
+[[maybe_unused]] Promise* Api::verifyCode(const QString &code, QString number) {
     auto p = new Promise { [](QNetworkReply *reply) -> QVariant {
         if (auto err = reply->error())
             return err;
-        auto code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-        if (code.isValid())
-            switch (code.toInt()) {
-                case 200: return QNetworkReply::NoError;
-                case 403: return QNetworkReply::AuthenticationRequiredError;
-                case 400: return QNetworkReply::ContentAccessDenied;
-                default: return QNetworkReply::UnknownContentError;
-            }
-        else return QNetworkReply::UnknownContentError;
+        return reply->readAll();
     }, engine, this};
     auto req = QNetworkRequest {api_url("/auth/verifyCode")};
     req.setOriginatingObject(p);
     req.setHeader(QNetworkRequest::KnownHeaders::ContentTypeHeader, "application/json");
     QJsonObject json{};
-    QString num = number;
-    normalizeNumber(&num);
-    json.insert("number", num);
-    json.insert("code", code);
-    auto data = QJsonDocument {json}.toJson(QJsonDocument::Compact);
-    qDebug() << data;
-    _manager->post(req, data);
+    json["number"] = normalizeNumber(number);
+    json["code"] = code;
+    _manager->post(req, QJsonDocument {json}.toJson(QJsonDocument::Compact));
     handles.append(p);
     return p;
 }
@@ -143,9 +129,15 @@ QString Api::getApiChannelValue(Api::CodeVerificationChannel chan) {
     return "sms";
 }
 
-void Api::normalizeNumber(QString* num) {
-    num->replace(" ", "");
-    num->replace("-", "");
+QString& Api::normalizeNumber(QString& num) {
+    num.replace(" ", "");
+    num.replace("-", "");
+    return num;
+}
+
+Promise *
+Api::registerUser(const QString &token, const QString &firstName, const QString &lastName, const QString &username) {
+    return nullptr; //TODO
 }
 
 #pragma clang diagnostic pop

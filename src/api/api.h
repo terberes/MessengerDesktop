@@ -18,21 +18,23 @@ public:
     };
     Q_ENUM(CodeVerificationChannel)
     explicit Api(QObject *parent = nullptr);
-    Api(QJSEngine* qjsEnginePtr);
+    explicit Api(QJSEngine* qjsEnginePtr);
     Q_INVOKABLE void setBaseUrl(QString url);
     Q_INVOKABLE QString getBaseUrl();
 
     void handle_response(QNetworkReply* res);
 
-    Q_INVOKABLE [[maybe_unused]] Promise* getServerPrefs();
-    Q_INVOKABLE [[maybe_unused]] Promise* sendCode(const QString&, CodeVerificationChannel);
-    Q_INVOKABLE [[maybe_unused]] Promise* verifyCode(const QString& code, const QString& number);
+    Q_INVOKABLE Promise* getServerPrefs();
+    Q_INVOKABLE Promise* sendCode(QString, CodeVerificationChannel);
+    Q_INVOKABLE Promise* verifyCode(const QString& code, QString number);
+    Q_INVOKABLE Promise* registerUser(const QString& token, const QString& firstName,
+            const QString& lastName, const QString& username);
 
     QNetworkAccessManager* _manager;
 
 private:
     static QString getApiChannelValue(CodeVerificationChannel);
-    static void normalizeNumber(QString*);
+    static QString& normalizeNumber(QString&);
     static const QString path_prefix; // = "/api"
     static const QString protocol; // = "http://"
     QString base_url;

@@ -1,13 +1,11 @@
 #include "phonenumberformatterservice.h"
 #include <phonenumbers/phonenumberutil.h>
-#include <boost/locale.hpp>
 #include <QDebug>
 using i18n::phonenumbers::PhoneNumber;
-//using i18n::phonenumbers::
 
 PhoneNumberFormatterService::PhoneNumberFormatterService(QObject *parent) : QObject(parent)
 {
-    this->_locale = std::use_facet<boost::locale::info>(boost::locale::generator{}("")).language();
+    this->_locale = QLocale::system().name().split("_")[0].toStdString();
     this->_fmt = PhoneNumberUtil::GetInstance()->GetAsYouTypeFormatter(this->_locale);
     std::string temp_str;
     this->_fmt->InputDigit('+', &temp_str);

@@ -8,6 +8,7 @@
         <file alias="NumberInput.qml">intro/NumberInput.qml</file>
         <file alias="ServerDetailsInput.qml">intro/ServerDetailsInput.qml</file>
         <file alias="IntroStage.qml">intro/IntroStage.qml</file>
+        <file alias="RegisterInput.qml">intro/RegisterInput.qml</file>
     </qresource>
     <qresource prefix="/config">
         <file alias="Constants.qml">config/Constants.qml</file>

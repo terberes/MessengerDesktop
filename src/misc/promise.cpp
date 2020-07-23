@@ -4,6 +4,7 @@
 
 Promise::Promise(QObject* parent) : QObject(parent) { }
 
+
 Promise::Promise(
         std::function<QVariant(QNetworkReply*)> parseFunc,
         [[maybe_unused]] QJSEngine* jsEngine,
@@ -14,8 +15,8 @@ Promise::Promise(
 void Promise::handle_response(QNetworkReply* res) {
     auto err = res->error();
     if (err != QNetworkReply::NoError) {
-        qDebug() << "Error " << res->errorString() << " occurred";
-        qDebug() << res->readAll();
+//        qDebug() << "Error " << res->errorString() << " occurred";
+//        qDebug() << res->readAll();
         call_js_callback(_fail_callback,
                          QJSValueList{ engine->toScriptValue(err), engine->toScriptValue(res->errorString()) });
         return;

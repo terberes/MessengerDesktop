@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import Api 1.0
+import Misc.System 1.0
 
 ApplicationWindow {
     id: root
@@ -9,6 +10,7 @@ ApplicationWindow {
     height: 480
     visible: true
 //    signal introFinished
+
     BusyIndicator {
         id: busyIndicator
         x: 0
@@ -43,29 +45,46 @@ ApplicationWindow {
             id: codeInput
             CodeInput {}
         }
+
     ]
-    Dialog {
+    Component {
+        id: registerInput
+
+    }
+
+    Popup {
         id: apiErrorDialog
         modal: true
-        title: qsTr("Connection Error")
-        contentItem: Label {}
+        anchors.centerIn: parent
+        width: 250
+        height: 100
+//        title: qsTr("Connection Error")
+        contentItem: Label { verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter }
     }
     property var number: ""
     Connections {
+        id: connections
         target: stagesStack.currentItem
         function onSetSpin(t) {
             busyIndicator.enabled = t
         }
         function onStageComplete() {
-            stagesStack.push(stages[++currentStage])
+            if (++currentStage === stages.length)
+                Restarter.restart()
+            else stagesStack.push(stages[currentStage])
         }
         function onOpenErrorDialog(content, header, footer) {
-            apiErrorDialog.title = !!header || "Api error"
+            console.error("Opening dialog")
+//            apiErrorDialog.title = !!header || "Api error"
             apiErrorDialog.contentItem.label = content
-            apiErrorDialog.footer = !!header || ""
+//            apiErrorDialog.footer = !!header || ""
+            apiErrorDialog.visible = true;
         }
         function onSetNumber(numberIn) {
             number = numberIn
+        }
+        function onEnableRegister() {
+            stages.push(registerInput)
         }
     }
 }
