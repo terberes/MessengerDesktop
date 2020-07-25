@@ -2,6 +2,7 @@ import QtQuick 2.0
 import QtQuick.Window 2.0
 import QtQuick.Controls 2.15
 import Api 1.0
+import Persist 1.0
 import Misc.System 1.0
 
 ApplicationWindow {
@@ -29,10 +30,9 @@ ApplicationWindow {
         hoverEnabled: true
         anchors.centerIn: parent
         anchors.fill: parent
-        initialItem: stages[currentStage]
     }
     property var currentStage: 0
-    property list<Component> stages: [
+    property list<Component> templateStages: [
         Component {
             id: serverDetailsInput
             ServerDetailsInput {}
@@ -45,12 +45,9 @@ ApplicationWindow {
             id: codeInput
             CodeInput {}
         }
-
     ]
-    Component {
-        id: registerInput
 
-    }
+    property var stages: []
 
     Popup {
         id: apiErrorDialog
@@ -62,6 +59,18 @@ ApplicationWindow {
         contentItem: Label { verticalAlignment: Text.AlignVCenter; horizontalAlignment: Text.AlignHCenter }
     }
     property var number: ""
+
+    Component.onCompleted: {
+        if (!Settings.isUrlSet())
+            stages.push(serverDetailsInput)
+        else Api.setUrl(Settings.url)
+        if (Settings.codeExpired())
+            stages.push(numberInput)
+        stages.push(codeInput)
+        currentStage = 0
+        stagesStack.push(stages[0])
+    }
+
     Connections {
         id: connections
         target: stagesStack.currentItem
@@ -73,7 +82,7 @@ ApplicationWindow {
                 Restarter.restart()
             else stagesStack.push(stages[currentStage])
         }
-        function onOpenErrorDialog(content, header, footer) {
+        function onOpenErrorDialog(content) {
             console.error("Opening dialog")
 //            apiErrorDialog.title = !!header || "Api error"
             apiErrorDialog.contentItem.label = content

@@ -46,7 +46,10 @@ set(FILES
         src/qml/qml.qrc
         src/api/promise.cpp
         src/misc/promise.h
-        src/misc/restarter.cpp src/misc/restarter.h src/api/jwt.cpp src/api/jwt.h)
+        src/misc/restarter.cpp
+        src/misc/restarter.h
+        src/api/jwt.cpp
+        src/api/jwt.h)
 if (ANDROID)
     add_library(MessengerDesktop SHARED
             ${FILES}
