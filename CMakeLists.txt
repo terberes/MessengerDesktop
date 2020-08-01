@@ -25,42 +25,43 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 find_package(Qt5 COMPONENTS Core Quick LinguistTools QuickControls2 Network REQUIRED)
-#find_package(Boost 1.72.0 COMPONENTS locale REQUIRED)
+find_library(SIGNALR signalrclient HINTS libs/SignalR-Client-Cpp REQUIRED)
 
-find_library(LIBPHONENUMBER phonenumber REQUIRED)
+find_library(LIBPHONENUMBER phonenumber HINTS libs/libphonenumber/cpp REQUIRED)
 
 #set(TS_FILES MessengerDesktop_en_US.ts)
 set(TS_FILES)
 
+
 include_directories(Boost::headers)
 
-set (FILES
-    src/main.cpp
-    src/data/settings.cpp
-    src/data/settings.h
-    src/misc/phonenumberformatterservice.cpp
-    src/misc/phonenumberformatterservice.h
-    src/api/api.cpp
-    src/api/api.h
-    src/qml/qml.qrc
-    src/misc/promise.cpp
-    src/misc/promise.h
-        src/misc/restarter.cpp src/misc/restarter.h)
-if(ANDROID)
+set(FILES
+        src/main.cpp
+        src/data/settings.cpp
+        src/data/settings.h
+        src/misc/phonenumberformatterservice.cpp
+        src/misc/phonenumberformatterservice.h
+        src/api/api.cpp
+        src/api/api.h
+        src/qml/qml.qrc
+        src/api/promise.cpp
+        src/misc/promise.h
+        src/misc/restarter.cpp src/misc/restarter.h src/api/jwt.cpp src/api/jwt.h)
+if (ANDROID)
     add_library(MessengerDesktop SHARED
-      ${FILES}
-      ${TS_FILES}
-    )
-else()
+            ${FILES}
+            ${TS_FILES}
+            )
+else ()
     add_executable(MessengerDesktop
-      ${FILES}
-      ${TS_FILES}
-    )
-endif()
+            ${FILES}
+            ${TS_FILES}
+            )
+endif ()
 
 target_compile_definitions(MessengerDesktop
-  PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
+        PRIVATE $<$<OR:$<CONFIG:Debug>,$<CONFIG:RelWithDebInfo>>:QT_QML_DEBUG>)
 
 target_link_libraries(MessengerDesktop
-    PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 Qt5::Network ${LIBPHONENUMBER})
+        PRIVATE Qt5::Core Qt5::Quick Qt5::QuickControls2 Qt5::Network ${LIBPHONENUMBER})
 #qt5_create_translation(QM_FILES ${CMAKE_SOURCE_DIR} ${TS_FILES})

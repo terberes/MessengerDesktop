@@ -1,0 +1,3 @@
+[submodule "libs/libphonenumber"]
+	path = libs/libphonenumber
+	url = https://github.com/google/libphonenumber.git
