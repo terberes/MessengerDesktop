@@ -25,8 +25,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #endif()
 
 find_package(Qt5 COMPONENTS Core Quick LinguistTools QuickControls2 Network REQUIRED)
-find_library(SIGNALR signalrclient HINTS libs/SignalR-Client-Cpp REQUIRED)
-
 find_library(LIBPHONENUMBER phonenumber HINTS libs/libphonenumber/cpp REQUIRED)
 
 #set(TS_FILES MessengerDesktop_en_US.ts)
@@ -45,8 +43,8 @@ set(FILES
         src/api/api.h
         src/qml/qml.qrc
         src/api/promise.cpp
-        src/misc/promise.h
-        src/misc/restarter.cpp src/misc/restarter.h src/api/jwt.cpp src/api/jwt.h)
+        src/api/promise.h
+        src/misc/restarter.cpp src/misc/restarter.h)
 if (ANDROID)
     add_library(MessengerDesktop SHARED
             ${FILES}
